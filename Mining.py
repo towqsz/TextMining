@@ -58,7 +58,7 @@ class BagOfWords:
             for counter2, element2 in enumerate(
                     self.get_similiarity_array()[:100]):
                 similarity = sum(element1 & element2)
-                if similarity > max_similarity:
+                if similarity > max_similarity and self._file_manager.file['tweet'][counter1] != self._file_manager.file['tweet'][counter2]:
                     max_similarity = similarity
                     tweet1 = self._file_manager.file['tweet'][counter1]
                     tweet2 = self._file_manager.file['tweet'][counter2]
