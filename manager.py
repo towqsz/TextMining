@@ -1,8 +1,5 @@
-from Statistics import Counter
-from FileManager import FileManager
-from Mining import BagOfWords, SentimentalAnalyzer, WordEmbedder
-from Preprocessing import TextClearer
-
+from Interface.MiningInterface import MiningInterface
+from Interface.PrintHead import PrintHead
 
 def print_header(header):
     print("\n\n")
@@ -11,38 +8,24 @@ def print_header(header):
 
 
 def main():
-    file_manager = FileManager("train_tweets.csv")
-    file = file_manager.file
-    #print(file)
+    interface = MiningInterface("train_tweets.csv")
 
-    print_header("Wyświetl statystyki:")
-    cntr = Counter(file)
-    cntr.show()
+    print_header("Statistics:")
+    for st in interface.get_all_statistics():
+        PrintHead(st)
 
-    print_header("Popraw tekst:")
-    text_clearer = TextClearer(file)
+    print_header("Prepare file:")
+    PrintHead(interface.prepare_file())
 
+    print_header("Sentimental analysis:")
+    PrintHead(interface.get_sentimental())
 
-    text_clearer.remove_common_words()
-    text_clearer.remove_rare_words()
-    text_clearer.correct_spelling()
-    #file = text_clearer.lemmatize()
-    #print(file)
+    interface.restore()
 
-    print(SentimentalAnalyzer(file).proccess_data())
-
-    # embedder = WordEmbedder(file_manager)
-    # print(embedder.get_model())
-    # print(embedder.find_vector("go", "away"))
-
-
-    bow = BagOfWords(file_manager)
-    bow.find_bag_of_words()
-    print(bow.get_names())
-    print(bow.get_similiarity_array())
-    print(bow.find_most_smiliar_tweets())
-
-
+    print_header("Bag of words:")
+    print(interface.get_similiarity_array())
+    print(interface.get_bow_names())
+    print(interface.get_most_similiar_tweets())
 
 
 if __name__ == "__main__":
